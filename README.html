@@ -1,0 +1,92 @@
+<head>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+    }
+    div {
+      margin-left: 1em;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>麻雀ソリティア</h1>
+  <h2>必要なもの</h2>
+  <div>nodejs version 24</div>
+  <h2>役一覧確認</h2>
+  <div>ターミナルでこのディレクトリを開き、以下。</div>
+  <div>node list-patterns.js</div>
+  <h2>点数計算</h2>
+  <div>
+    (1) 翻数合計 n による点数
+    <div>
+      (1-1) n &lt;= 4
+      <div>500 × (2 の n 乗) の上2桁までの丸め</div>
+    </div>
+    <div>
+      (1-2) n &gt; 4
+      <div>8000 × (2 の 3 乗根 の (n - 4) 乗) の上2桁までの丸め</div>
+    </div>
+    <div>(10 翻で役満相当となる)</div>
+  </div>
+  <div>
+    (2) 役満数合計 m による点数
+    <div> 32000 × m </div>
+  </div>
+  <div>(1) + (2)</duv>
+  <h2>ゲーム開始</h2>
+  <div>ターミナルでこのディレクトリを開き、以下。</div>
+  <div>node index.js</div>
+  <h2>ゲーム中の操作</h2>
+  <ul>
+    <li>左キーでカーソルを左に動かす</li>
+    <li>右キーでカーソルを右に動かす</li>
+    <li>エンターキーで決定する</li>
+  </ul>
+  <h2>表記</h2>
+  <div>表示の都合上、牌は半角3文字で表現される。</div>
+  <div>実際には色付き</div>
+  <ul>
+    <li>$n$ 萬子</li>
+    <li>*n* 筒子</li>
+    <li>!n! 索子</li>
+    <li>TON 東</li>
+    <li>NAN 南</li>
+    <li>XIA 西</li>
+    <li>PEI 北</li>
+    <li>[ ] 白</li>
+    <li>[#] 發</li>
+    <li>[@] 中</li>
+  </ul>
+  <div>また、ゲーム中の操作選択肢も同様に半角3文字で表記される</div>
+  <ul>
+    <li>KAN [ ] 白をカンする</li>
+    <li>FIN あがる</li>
+  </ul>
+  <h2>未実装役</h2>
+  <div>実装の難しいもの</div>
+  <ul>
+    <li>立直 関連すべて</li>
+  </ul>
+  <div>不採用としたもの</div>
+  <ul>
+    <li>国士無双13面待ち</li>
+    <li>九連宝燈9面待ち</li>
+    <li>流し満貫</li>
+  </ul>
+  <div>一度に複数の対局を行う前提のもの</div>
+  <ul>
+    <li>八連荘</li>
+  </ul>
+  <div>一度に複数人で対局を行う前提のもの</div>
+  <ul>
+    <li>河底撈魚</li>
+    <li>十二落抬</li>
+    <li>地和</li>
+    <li>人和</li>
+    <li>槓振り</li>
+    <li>燕返し</li>
+    <li>真似満</li>
+  </ul>
+</body>

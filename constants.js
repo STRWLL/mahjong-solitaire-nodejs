@@ -1,0 +1,12 @@
+export const LF = '\n';
+export const INDENT = '  ';
+export const BODY_COUNT = 4;
+export const HEAD_COUNT = 1;
+export const HEAD_SIZE = 2;
+export const BODY_PART_SIZE = 3;
+export const QUAD_SIZE = BODY_PART_SIZE + 1;
+export const DRAW_COUNT = 36;
+export const DISCARD_PILE_INLINE_LENGTH = 6;
+export const ORDER_START = 1;
+export const ORDER_END = 9;
+export const TILE_DUPLICATION = 4;
