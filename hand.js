@@ -525,49 +525,49 @@ export class HandSplitter {
    * @returns {HandPart[]}
    */
   get heads() {
-    return this.#heads;
+    return Object.freeze(this.#heads);
   }
 
   /**
    * @returns {HandPart[]}
    */
   get straights() {
-    return this.#straights;
+    return Object.freeze(this.#straights);
   }
 
   /**
    * @returns {HandPart[]}
    */
   get triples() {
-    return this.#triples;
+    return Object.freeze(this.#triples);
   }
 
   /**
    * @returns {HandPart[]}
    */
   get quads() {
-    return this.#hand.quads;
+    return Object.freeze(this.#hand.quads);
   }
 
   /**
    * @returns {HandPart[]}
    */
   get bodyParts() {
-    return [
+    return Object.freeze([
       ...this.straights,
       ...this.triples,
       ...this.quads,
-    ];
+    ]);
   }
 
   /**
    * @returns {HandPart[]}
    */
   get parts() {
-    return [
+    return Object.freeze([
       ...this.heads,
       ...this.bodyParts,
-    ];
+    ]);
   }
 
   /**
@@ -584,7 +584,7 @@ export class HandSplitter {
    * @returns {String[]}
    */
   get operationLog() {
-    return this.#operationLog;
+    return Object.freeze(this.#operationLog);
   }
   
   /**
