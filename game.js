@@ -105,8 +105,6 @@ export class Game {
     this.#writer.writeLine();
     this.#writer.writeLine(`last drawn: ${this.#player.hand.lastDrawn ?? 'none'}`);
     this.#writer.writeLine();
-    this.#displayChoices();    
-    this.#writer.writeLine();
 
     // extra hand
     this.#player.hand.quads.forEach((quad) => {
@@ -115,6 +113,9 @@ export class Game {
     if (this.#player.hand.quads.length > 0) {
       this.#writer.writeLine();
     }
+
+    this.#displayChoices();    
+    this.#writer.writeLine();
   }
 
   #displayFinishers() {
