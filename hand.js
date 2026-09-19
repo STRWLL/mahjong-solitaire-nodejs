@@ -526,6 +526,13 @@ export class HandSplitter {
   }
 
   /**
+   * @returns {Hand}
+   */
+  get hand() {
+    return Object.freeze(hand);
+  }
+
+  /**
    * @returns {int}
    */
   get notFoundCount() {
