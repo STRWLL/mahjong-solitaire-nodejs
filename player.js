@@ -21,6 +21,7 @@ export class Player {
   #hand;
   #drawnCount = 0;
   #drawnCountAfterLastKan = 0;
+  #kanCombo = 0;
 
   /**
    * @param {DrawPile} drawPile 
@@ -58,6 +59,11 @@ export class Player {
    */
   kan(tile) {
     this.#hand.kan(tile);
+    if (this.#drawnCountAfterLastKan === 1) {
+      this.#kanCombo++;
+    } else {
+      this.#kanCombo = 1;
+    }
     this.#drawnCountAfterLastKan = 0;
   }
 
@@ -94,5 +100,12 @@ export class Player {
    */
   get drawnCountAfterLastKan() {
     return this.#drawnCountAfterLastKan;
+  }
+
+  /**
+   * @returns {int}
+   */
+  get kanCombo() {
+    return this.#kanCombo;
   }
 }

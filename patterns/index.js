@@ -31,12 +31,18 @@ import { ThreeSameStraights } from "./variations/three-same-straights.js";
 import { FourSameStraights } from "./variations/four-same-straights.js";
 import { FullStraight } from "./variations/full-straight.js";
 import { ColorfulFullStraight } from "./variations/colorful-full-straight.js";
+import { AfterQuadBorn2Combo } from "./variations/after-quad-born-2-combo.js";
+import { AfterQuadBorn3Combo } from "./variations/after-quad-born-3-combo.js";
+import { AfterQuadBorn4Combo } from "./variations/after-quad-born-4-combo.js";
 
 /**
  * @type {Pattern[]}
  */
 export const allPatterns = [
   new AfterQuadBorn(),
+  new AfterQuadBorn2Combo(),
+  new AfterQuadBorn3Combo(),
+  new AfterQuadBorn4Combo(),
   new TailOfDrawPile(),
   new FullConcealed(),
   new BlessingOfHeaven(),

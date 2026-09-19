@@ -1,7 +1,7 @@
 import { AfterQuadBornNCombo } from "../prototypes/after-quad-born-n-combo.js";
 
-export class AfterQuadBorn extends AfterQuadBornNCombo {
+export class AfterQuadBorn2Combo extends AfterQuadBornNCombo {
   constructor() {
-    super('嶺上開花', 1, 1, 0);
+    super('二連開花', 2, 3, 0);
   }
 }
