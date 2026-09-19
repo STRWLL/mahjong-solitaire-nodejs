@@ -16,10 +16,6 @@ import {
   Kan,
 } from './choice.js';
 
-import {
-  LF,
-} from './constants.js';
-
 import process from 'process';
 
 export class InvalidModeException extends Error {

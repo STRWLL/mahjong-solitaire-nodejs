@@ -83,3 +83,5 @@ export const cerulean = new Color(0, 128, 255).fore;
 export const amber = new Color(255, 192, 0).fore;
 export const lavender = new Color(192, 128, 255).fore;
 export const water = new Color(192, 224, 255).fore;
+export const electron = new Color(64, 255, 192).fore;
+export const gray = new Color(128, 128, 128).fore;

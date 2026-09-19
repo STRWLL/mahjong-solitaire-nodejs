@@ -1,6 +1,8 @@
 import {
   amber,
   Color,
+  electron,
+  gray,
   lavender,
   water,
 } from './color.js';
@@ -12,18 +14,43 @@ import {
  */
 
 export class Choice {
-  /**
-   * @returns {String}
-   */
-  get description() {
-    return 'I describe about this choice.';
+  #label;
+  #description;
+  #tile;
+  #enabled = true;
+
+  constructor(label, description, tile) {
+    this.#label = label;
+    this.#description = description;
+    this.#tile = tile;
   }
 
   /**
    * @returns {String}
    */
+  get description() {
+    return this.#description;
+  }
+
+  /**
+   * @returns {Tile}
+   */
+  get tile() {
+    return this.#tile;
+  }
+
   toString() {
-    return 'SEL';
+    return this.#label;
+  }
+
+  enable() {
+    this.#enabled = true;
+    return this;
+  }
+
+  disable() {
+    this.#enabled = false;
+    return this;
   }
 
   /**
@@ -31,92 +58,62 @@ export class Choice {
    * @returns {String}
    */
   getCursorBox(selected) {
-    const surrounded = selected ? '-' : ' ';
-    const chars = new Array(Color.remove(this.toString()).length).fill(surrounded);
-    chars.splice(0, 1, '[');
-    chars.splice(-1, 1, ']');
-    return chars.join('');
+    const surrounded = Color.applyAll(
+      (
+        this.#enabled
+        ? (selected ? '-' : ' ')
+        : '/'
+      ).repeat(Color.remove(this.toString()).length - 2),
+      this.#enabled ? electron : gray,
+    );
+    return `[${surrounded}]`;
   }
 }
 
 export class Discard extends Choice {
-  #tile;
-
   /**
    * @param {Tile} tile
    */
   constructor(tile) {
-    super();
-    this.#tile = tile;
-  }
-
-  get tile() {
-    return this.#tile;
-  }
-
-  get description() {
-    return `discarding: ${this.#tile}`;
-  }
-
-  toString() {
-    return this.#tile.toString();
+    super(
+      String(tile),
+      `discarding: ${tile}`,
+      tile,
+    );
   }
 }
 
 export class Reach extends Choice {
-  #tile;
-
   /**
    * @param {Tile} tile
    */
   constructor(tile) {
-    super();
-    this.#tile = tile;
-  }
-
-  get tile() {
-    return this.#tile;
-  }
-
-  get description() {
-    return `reach by discarding: ${this.#tile}`;
-  }
-
-  toString() {
-    return `${Color.applyAll('RCH', water)} ${this.#tile.toString()}`;
+    super(
+      String(tile),
+      `reach by discarding: ${tile}`,
+      `${Color.applyAll('RCH', water)} ${tile.toString()}`,
+    );
   }
 }
 
 export class Finish extends Choice {
-  get description() {
-    return 'finishing with this hand';
-  }
-
-  toString() {
-    return Color.applyAll('FIN', amber);
+  constructor() {
+    super(
+      Color.applyAll('FIN', amber),
+      'finishing with this hand',
+    );
   }
 }
 
 export class Kan extends Choice {
-  #tile;
-
   /**
    * @param {Tile} tile
    */
   constructor(tile) {
-    super();
-    this.#tile = tile;
-  }
-
-  get tile() {
-    return this.#tile;
-  }
-
-  get description() {
-    return `kan: ${this.#tile}`;
-  }
-
-  toString() {
-    return `${Color.applyAll('KAN', lavender)} ${this.#tile.toString()}`;
+    super(
+      `${Color.applyAll('KAN', lavender)} ${tile.toString()}`,
+      `kan: ${tile}`,
+      tile,
+    );
   }
 }
