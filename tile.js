@@ -36,6 +36,14 @@ export class Tile {
   toString() {
     return this.#def.label;
   }
+
+  /**
+   * @param {Tile[]} tiles
+   * @return {String}
+   */
+  static serialize(tiles) {
+    return tiles.map((tile) => tile.def.id).join('-');
+  }
 }
 
 export class TileDefinition {
