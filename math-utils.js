@@ -1,30 +1,44 @@
+export const ROUND_DOWN = 0;
+export const ROUND_UP = 1;
+
 /**
  * 銀行屋でない丸め
+ * @param {Mumber} x 丸める対象
+ * @param {int} type 丸め種別 null で四捨五入
  */
-export function round(x) {
+export function round(x, type) {
   const intPart = Math.floor(x);
-  if (x - intPart < 0.5) return intPart;
-  return intPart + 1;
+  switch (type) {
+    case ROUND_DOWN:
+      return intPart;
+    case ROUND_UP:
+      return intPart + 1;
+    default:
+      if (x - intPart < 0.5) return intPart;
+      return intPart + 1;
+  }  
 };
 
 /**
  * 単位指定可能丸め
  * @param {Number} x 丸め対象
  * @param {Number} y 丸め単位
+ * @param {int} type 丸め種別 null で四捨五入
  */
-export function roundInto(x, y) {
-  return round(x / y) * y; 
+export function roundInto(x, y, type) {
+  return round(x / y, type) * y; 
 };
 
 /**
  * 有効桁数指定可能丸め
  * @param {Number} x 丸め対象
  * @param {Number} y 有効桁数
+ * @param {int} type 丸め種別 null で四捨五入
  */
-export function roundValid(x, y) {
+export function roundValid(x, y, type) {
   const intLog10 = Math.floor(Math.log10(x));
   const roundUnit = Math.pow(10, intLog10 - y + 1);
-  return roundInto(x, roundUnit);
+  return roundInto(x, roundUnit, type);
 }
 
 /**

@@ -1,10 +1,10 @@
-import { roundValid } from "./math-utils.js";
+import {
+  ROUND_UP,
+  roundInto,
+} from "./math-utils.js";
 
-// 有効桁数
-const VALID_DIGITS = 2;
-
-// スコアの指数関数部の底
-const EXPONENTIAL_BASE = 2;
+// 点数の最小単位
+const SCORE_MIN_UNIT = 1000;
 
 // スコアを勢いよく増加させる最大の翻数
 const MAX_INTENSELY_SCORED = 4;
@@ -26,7 +26,11 @@ function calculateScore1(p1) {
     exponentialBase = Math.pow(2, 1 / 3);
     offset = MAX_INTENSELY_SCORED;
   }
-  return roundValid(multiplied * Math.pow(exponentialBase, p1 - offset), VALID_DIGITS);
+  return roundInto(
+    multiplied * Math.pow(exponentialBase, p1 - offset),
+    SCORE_MIN_UNIT,
+    ROUND_UP,
+  );
 }
 
 /**
