@@ -53,8 +53,9 @@ export class Pattern {
    * @returns {String}
    */
   get description() {
-    const lines = [this.#description];
-    if (this.#describeAllowed) lines.push(`使用可能牌: ${this.#allowed.map((tile) => tile.def.text).join(' ')}`);
+    const lines = [];
+    if (this.#description) lines.push(this.#description);
+    if (this.#describeAllowed) lines.push(`使用可能牌: ${this.#allowed.map((def) => def.text).join(' ')}`);
     return lines.join(LF);
   }
 

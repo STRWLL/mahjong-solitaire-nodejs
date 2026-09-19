@@ -12,7 +12,7 @@ export class TileVariationLimitation extends Pattern {
   constructor(label, allowed, p1, p2) {
     super(
       label,
-      '',
+      null,
       false,
       true,
       allowed,
