@@ -826,7 +826,7 @@ export class HandEvaluator {
 
       if (score > this.#score) {
         this.#score = score;
-        this.#patterns = patterns;
+        this.#patterns = [...patterns];
         this.#scoredSplitter = splitter;
       }
     });
