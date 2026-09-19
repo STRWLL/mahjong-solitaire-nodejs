@@ -39,6 +39,13 @@ export class Choice {
     return this.#tile;
   }
 
+  /**
+   * @returns {Boolean}
+   */
+  get enabled() {
+    return this.#enabled;
+  }
+
   toString() {
     return this.#label;
   }

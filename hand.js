@@ -382,16 +382,6 @@ export class Hand {
   }
 
   /**
-   * @param {int} index
-   * @returns {Hand}
-   */
-  removePerview(index) {
-    const clone = this.clone();
-    clone.remove(index);
-    return clone;
-  }
-
-  /**
    * @param {Tile} member
    * @return {Hand}
    */
@@ -408,6 +398,26 @@ export class Hand {
     }
     this.addQuad(HandPart.createQuadOf(removed));
     return this;
+  }
+
+  /**
+   * @param {int} index
+   * @returns {Hand}
+   */
+  removePerview(index) {
+    const clone = this.clone();
+    clone.remove(index);
+    return clone;
+  }
+
+  /**
+   * @param {Tile} tile
+   * @returns {Hand}
+   */
+  kanPreview(tile) {
+    const clone = this.clone();
+    clone.kan(tile);
+    return clone;
   }
 
   /**
@@ -430,7 +440,7 @@ export class Hand {
    * @returns {String}
    */
   serializeContents() {
-    return this.contents.map((tile) => tile.def.id).join('-');
+    return Tile.serialize(this.contents);
   }
 }
 
@@ -745,6 +755,7 @@ export class HandEvaluator {
       });
       return acc;
     }, {})));
+    this.#finishers.sort((a, b) => a.def.id - b.def.id);
     this.#finishersExtracted = true;
   }
 

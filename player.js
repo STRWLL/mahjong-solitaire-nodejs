@@ -59,13 +59,16 @@ export class Player {
    * @param {int} index
    */
   discard(index) {
-    this.#discardPile.add(this.#hand.remove(index));
+    const removed = this.#hand.remove(index);
+    if (!removed) throw new Error('discarding out of hand');
+    this.#discardPile.add(removed);
   }
 
   /**
-   * @param {int} index
+   * @param {int} tile
    */
-  reach(index) {
+  reach(tile) {
+    const index = this.#hand.contents.findIndex((t) => t.def.id === tile.def.id);
     this.discard(index);
     this.#reaching = true;
   }
