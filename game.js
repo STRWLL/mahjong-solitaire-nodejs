@@ -239,11 +239,9 @@ export class Game {
    */
   #moveCursor(direction) {
     const size = this.#choices.length;
-    let amount = 1;
-    for (let i = 0; i < size * 2; i++) {
-      this.#choosenIndex = (size + this.#choosenIndex + amount * direction) % size;
+    for (let amount = 1; amount < size; amount++) {
+      this.#choosenIndex = (size + this.#choosenIndex + direction) % size;
       if (this.choice.enabled) break;
-      amount++;
     }
   }
 
