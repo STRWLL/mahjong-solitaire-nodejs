@@ -529,7 +529,7 @@ export class HandSplitter {
    * @returns {Hand}
    */
   get hand() {
-    return Object.freeze(hand);
+    return Object.freeze(this.#hand);
   }
 
   /**
