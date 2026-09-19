@@ -51,6 +51,7 @@ export class TileDefinition {
   #order;
   #id;
   #label;
+  #text;
   #duplication;
   static #table = new Map();
 
@@ -64,6 +65,7 @@ export class TileDefinition {
     orderBase,
     order,
     label,
+    text,
     duplication = TILE_DUPLICATION,
   ) {
     this.#orderBase = orderBase;
@@ -73,6 +75,7 @@ export class TileDefinition {
       throw new Error(`duplicated id ${id}`);
     }
     this.#label = label;
+    this.#text = text;
     this.#duplication = duplication;
     TileDefinition.#table.set(this.#id, this);
   }
@@ -110,6 +113,13 @@ export class TileDefinition {
    */
   get label() {
     return this.#label;
+  }
+
+  /**
+   * @returns {String}
+   */
+  get text() {
+    return this.#text;
   }
 
   /**
@@ -155,7 +165,12 @@ export const unitTileDefinitions = [
   8,
   9,
 ].map((order) => {
-  return new TileDefinition(0, order, Color.apply(`$${order}$`, rose, Color.defaultFore, rose));
+  return new TileDefinition(
+    0,
+    order,
+    Color.apply(`$${order}$`, rose, Color.defaultFore, rose),
+    `${order}萬`,
+  );
 });
 
 // id 101~: 筒子
@@ -170,7 +185,12 @@ export const coinTileDefinitions = [
   [8, cerulean, cerulean, cerulean],
   [9, cerulean, rose, cerulean],
 ].map(([order, ...colors]) => {
-  return new TileDefinition(1, order, Color.apply(`*${order}*`, ...colors));
+  return new TileDefinition(
+    1,
+    order,
+    Color.apply(`*${order}*`, ...colors),
+    `${order}筒`,
+  );
 });
 
 // id 201~: 索子
@@ -185,26 +205,41 @@ export const bambooTileDefinitions = [
   [8, leaf, leaf, leaf],
   [9, leaf, rose, leaf],
 ].map(([order, ...colors]) => {
-  return new TileDefinition(2, order, Color.apply(`!${order}!`, ...colors));
+  return new TileDefinition(
+    2,
+    order,
+    Color.apply(`!${order}!`, ...colors),
+    `${order}索`,
+  );
 });
 
 // id 310~: 風牌
 export const windTileDefinitions = [
-  [10, 'TON'],
-  [20, 'NAN'],
-  [30, 'XIA'],
-  [40, 'PEI'],
-].map(([order, label]) => {
-  return new TileDefinition(3, order, Color.applyAll(label, cerulean));
+  [10, 'TON', '東'],
+  [20, 'NAN', '南'],
+  [30, 'XIA', '西'],
+  [40, 'PEI', '北'],
+].map(([order, label, text]) => {
+  return new TileDefinition(
+    3,
+    order,
+    Color.applyAll(label, cerulean),
+    text,
+  );
 });
 
 // id 410~: 三元牌
 export const dragonTileDefinitions = [
-  [10, '[ ]', Color.defaultFore, Color.defaultFore, Color.defaultFore],
-  [20, '[#]', Color.defaultFore, leaf, Color.defaultFore],
-  [30, '[@]', Color.defaultFore, rose, Color.defaultFore],
-].map(([order, label, ...colors]) => {
-  return new TileDefinition(4, order, Color.apply(label, ...colors));
+  [10, '[ ]', Color.defaultFore, '白'],
+  [20, '[#]', leaf, '發'],
+  [30, '[@]', rose, '中'],
+].map(([order, label, middleColor, text]) => {
+  return new TileDefinition(
+    4,
+    order,
+    Color.apply(label, Color.defaultFore, middleColor, Color.defaultFore),
+    text,
+  );
 });
 
 export const honorTileDefinitions = [
