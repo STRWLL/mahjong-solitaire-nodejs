@@ -27,6 +27,8 @@ import { DoubleDualColorTriples } from "./variations/double-dual-color-triples.j
 import { ThreeStepedTriples } from "./variations/three-stepped-triples.js";
 import { FourSteppedTriples } from "./variations/four-stepped-triples.js";
 import { ColorfulSteppedTriples } from "./variations/colorful-stepped-triples.js";
+import { ThreeSameStraights } from "./variations/three-same-straights.js";
+import { FourSameStraights } from "./variations/four-same-straights.js";
 
 /**
  * @type {Pattern[]}
@@ -40,6 +42,8 @@ export const allPatterns = [
   new FullOfStraights(),
   new OneStraightPair(),
   new TwoStraightPairs(),
+  new ThreeSameStraights(),
+  new FourSameStraights(),
   new DualColorStraights(),
   new DoubleDualColorStraights(),
   new ColorfulStraights(),
