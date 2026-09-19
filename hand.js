@@ -472,9 +472,10 @@ export class HandSplitter {
   static findFinishingPatterns(hand) {
     // method patterns
     const undeterminedBodyCount = BODY_COUNT - hand.quads.length;
+    // より多くの部分を刻子とする面子構成を優先
     const methodsFindingBody = [
-      HandSplitter.prototype.findStraight,
       HandSplitter.prototype.findTriple,
+      HandSplitter.prototype.findStraight,
     ];
     const methodPatternsFindingBody = getReplacementPermutations(methodsFindingBody, undeterminedBodyCount);
     const methodPatterns = methodPatternsFindingBody.flatMap((pat) => {
