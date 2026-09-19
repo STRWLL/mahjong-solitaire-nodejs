@@ -1,6 +1,8 @@
 import { Pattern } from "./pattern.js";
 import { HandSplitter } from "../../hand.js";
-import { TileDefinition } from "../../tile.js";
+import { honorTileDefinitions, TileDefinition } from "../../tile.js";
+
+const honorTileOrderBases = new Set(honorTileDefinitions.map((def) => def.orderBase));
 
 export class MNColorfulParts extends Pattern {
   #n;
@@ -64,7 +66,11 @@ export class MNColorfulParts extends Pattern {
       return acc;
     }, new Map());
     return Array.from(partMinOrderGroup.values()).filter((group) => {
-      const orderBaseVariations = new Set(group.map(({ orderBase }) => orderBase));
+      const orderBaseVariations = new Set(group.map(({ orderBase }) => {
+        return orderBase;
+      }).filter((orderBase) => {
+        return !honorTileOrderBases.has(orderBase);
+      }));
       return orderBaseVariations.size === this.#n;
     }).length === this.#m;
   }
