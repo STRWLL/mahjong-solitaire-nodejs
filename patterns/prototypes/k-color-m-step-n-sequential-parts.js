@@ -1,12 +1,17 @@
 import { Pattern } from "./pattern.js";
 import { HandSplitter } from "../../hand.js";
-import { TileDefinition } from "../../tile.js";
+import {
+  honorTileDefinitions,
+  TileDefinition,
+} from "../../tile.js";
 import { getStepSequencesInRange } from "../../math-utils.js";
 import {
   ORDER_START,
   ORDER_END,
 } from "../../constants.js";
 import { pickupFoundFirst } from "../../array-utils.js";
+
+const honorTileOrderBases = new Set(honorTileDefinitions.map((def) => def.orderBase));
 
 export class KColorMStepNSequentialParts extends Pattern {
   #n;
@@ -89,6 +94,7 @@ export class KColorMStepNSequentialParts extends Pattern {
       const foundPartsOrderBases = new Set(foundParts.map((part) => {
         return TileDefinition.get(part.min).orderBase;
       }));
+      if (foundPartsOrderBases.intersection(honorTileOrderBases).size > 0) return false;
       return foundPartsOrderBases.size === this.#k;
     });
   }

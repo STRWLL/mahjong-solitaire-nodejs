@@ -35,6 +35,7 @@ import { AfterQuadBorn2Combo } from "./variations/after-quad-born-2-combo.js";
 import { AfterQuadBorn3Combo } from "./variations/after-quad-born-3-combo.js";
 import { AfterQuadBorn4Combo } from "./variations/after-quad-born-4-combo.js";
 import { Reach } from "./variations/reach.js";
+import { FullHonors } from "./variations/full-honors.js";
 
 /**
  * @type {Pattern[]}
@@ -80,6 +81,7 @@ export const allPatterns = [
   new FourQuads(),
 
   new FullOrphans(),
+  new FullHonors(),
 ];
 
 /**

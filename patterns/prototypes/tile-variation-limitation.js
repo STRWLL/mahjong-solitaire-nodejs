@@ -1,14 +1,21 @@
 import { HandSplitter } from "../../hand.js";
+import { TileDefinition } from "../../tile.js";
 import { Pattern } from "./pattern.js";
 
 export class TileVariationLimitation extends Pattern {
-  constructor(label, tileDefIds, p1, p2) {
+  /**
+   * @param {String} label 
+   * @param {TileDefinition[]} allowed 
+   * @param {int} p1 
+   * @param {int} p2 
+   */
+  constructor(label, allowed, p1, p2) {
     super(
       label,
       '',
       false,
       true,
-      tileDefIds,
+      allowed,
       p1,
       p2,
     );
