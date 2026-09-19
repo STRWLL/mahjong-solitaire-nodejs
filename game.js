@@ -11,12 +11,15 @@ import {
 } from './hand.js';
 
 import {
+  ChoiceMetadata,
   Discard,
   Finish,
   Kan,
+  Reach,
 } from './choice.js';
 
 import process from 'process';
+import { splitArray } from './array-utils.js';
 
 export class InvalidModeException extends Error {
   constructor() {
@@ -44,7 +47,7 @@ export class Game {
   #player;
 
   #choices = [];
-  #choiceIndex = 0;
+  #choosenIndex = 0;
 
   /**
    * @param {Player} player
@@ -68,7 +71,7 @@ export class Game {
    * @returns {Choice}
    */
   get choice() {
-    return this.#choices[this.#choiceIndex];
+    return this.#choices[this.#choosenIndex];
   }
 
   #setEvents() {
@@ -101,13 +104,7 @@ export class Game {
     this.#writer.writeLine();
     this.#writer.writeLine(`last drawn: ${this.#player.hand.lastDrawn ?? 'none'}`);
     this.#writer.writeLine();
-
-    // choice
-    this.#writer.writeLine(this.#choices.map(String).join(' '));
-    this.#writer.writeLine(this.#choices.map((c, i) => {
-      return c.getCursorBox(i === this.#choiceIndex);
-    }).join(' '));
-    this.#writer.writeLine(this.choice.description);
+    this.#displayChoices();    
     this.#writer.writeLine();
 
     // extra hand
@@ -122,13 +119,33 @@ export class Game {
   #displayFinishers() {
     const hand = this.#player.hand;
     let finishers = [];
-    if (this.choice instanceof Discard) {
-      finishers = HandEvaluator.cacheable(hand.removePerview(this.#choiceIndex)).finishers;
+    if (this.choice instanceof Discard || this.choice instanceof Reach) {
+      finishers = HandEvaluator.cacheable(hand.removePerview(this.#choosenIndex)).finishers;
     } else if (this.choice instanceof Kan) {
       const kannedHand = hand.clone().kan(this.choice.tile)
       finishers = HandEvaluator.cacheable(kannedHand).finishers;
     }
     this.#writer.writeLine(`finishers: ${finishers.length ? finishers.map(String).join(' ') : 'none'}`);
+  }
+
+  #displayChoices() {
+    const discards = [];
+    const others = [];
+    this.#choices.forEach((choice, originalIndex) => {
+      const choiceMetadata = new ChoiceMetadata(choice, originalIndex);
+      if (choice instanceof Discard) {
+        return discards.push(choiceMetadata);
+      }
+      others.push(choiceMetadata);
+    });
+    
+    const choiceSplits = [discards, ...splitArray(others, 5)];
+    choiceSplits.forEach((split) => {
+      this.#writer.writeLine(split.map(cm => String(cm.choice)).join(' '));
+      this.#writer.writeLine(ChoiceMetadata.getCursorBoxes(split, this.#choosenIndex).join(' '));
+    });
+
+    this.#writer.writeLine(this.choice.description);
   }
 
   displayScore() {
@@ -141,29 +158,41 @@ export class Game {
 
   #resetChoice() {
     const hand = this.#player.hand;
-    this.#choices = hand.contents.map((tile) => new Discard(tile));
-    
-    if (HandEvaluator.cacheable(hand).finishable) {
-      this.#choices.push(new Finish());
-      this.#choiceIndex = this.#choices.length - 1;
-    } else {
-      this.#choiceIndex = this.#player.hand.contents.findIndex((tile) => {
-        return tile.def.id === this.#player.hand.lastDrawn.def.id;
-      });
-    }
 
-    // 画面表示前にそれぞれの打牌の待ちを洗い出しておく
+    // 手牌に対応する Discard を生成
+    this.#choices = hand.contents.map((tile) => new Discard(tile));
+
+    // 今後の選択肢追加や画面表示前にそれぞれの打牌の待ちを洗い出しておく
     this.#choices.forEach((choice, index) => {
-      if (choice instanceof Discard) {
-        HandEvaluator.cacheable(hand.removePerview(index)).finishers;
-      }
+      HandEvaluator.cacheable(hand.removePerview(index)).finishers;
     });
 
-    this.#player.hand.tilesKannable.forEach((kannable) => {
-      const firstIndex = this.#player.hand.contents.findIndex((tile) => {
-        return tile.def.id === kannable.def.id;
+    if (HandEvaluator.cacheable(hand).finishable) {
+      // あがれる場合、Finish を追加し、そこにカーソルを移動
+      this.#choices.push(new Finish());
+      this.#choosenIndex = this.#choices.length - 1;
+    } else {
+      // あがれない場合、ツモってきた牌にカーソルを移動
+      this.#choosenIndex = hand.contents.findIndex((tile) => {
+        return tile.def.id === hand.lastDrawn.def.id;
       });
-      this.#choices.splice(firstIndex, 1, new Kan(kannable));
+    }
+    
+    // カン出来る牌ごとに Kan を追加
+    hand.tilesKannable.forEach((kannable) => {
+      this.#choices.push(new Kan(kannable));
+    });
+
+    // 切ると聴牌になる牌ごとに Reach を生成
+    const addedReachableTileDefIds = new Set();
+    hand.contents.forEach((tile, index) => {
+      if (
+        HandEvaluator.cacheable(hand.removePerview(index)).finishers.length > 0
+        && !addedReachableTileDefIds.has(tile.def.id)
+      ) {
+        this.#choices.push(new Reach(tile));
+        addedReachableTileDefIds.add(tile.def.id);
+      }
     });
   }
 
@@ -172,12 +201,12 @@ export class Game {
    */
   #moveCursor(direction) {
     const size = this.#choices.length;
-    this.#choiceIndex = (size + this.#choiceIndex + direction) % size;
+    this.#choosenIndex = (size + this.#choosenIndex + direction) % size;
   }
 
   #applySelection() {
     if (this.choice instanceof Discard) {
-      this.#player.discard(this.#choiceIndex);
+      this.#player.discard(this.#choosenIndex);
       this.#markLastFinishers();
     } else if (this.choice instanceof Finish) {
       HandEvaluator.cacheable(this.#player.hand).calculateScore(this.#player);

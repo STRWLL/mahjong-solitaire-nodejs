@@ -83,15 +83,50 @@ export class Discard extends Choice {
   }
 }
 
+export class ChoiceMetadata {
+  #choice;
+  #originalIndex;
+  /**
+   * @param {Choice} choice 
+   * @param {int} originalIndex 
+   */
+  constructor(choice, originalIndex) {
+    this.#choice = choice;
+    this.#originalIndex = originalIndex;
+  }
+  /**
+   * @returns {Choice}
+   */
+  get choice() {
+    return this.#choice;
+  }
+  /**
+   * @returns {int}
+   */
+  get originalIndex() {
+    return this.#originalIndex;
+  }
+  /**
+   * @param {ChoiceMetadata[]} choiceMetadataList
+   * @param {int} choosenIndex
+   * @returns {String[]}
+   */
+  static getCursorBoxes(choiceMetadataList, choosenIndex) {
+    return choiceMetadataList.map((cm) => {
+      return cm.choice.getCursorBox(cm.originalIndex === choosenIndex);
+    });
+  }
+}
+
 export class Reach extends Choice {
   /**
    * @param {Tile} tile
    */
   constructor(tile) {
     super(
-      String(tile),
-      `reach by discarding: ${tile}`,
       `${Color.applyAll('RCH', water)} ${tile.toString()}`,
+      `reach by discarding: ${tile}`,
+      tile,
     );
   }
 }
