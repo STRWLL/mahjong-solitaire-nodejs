@@ -198,7 +198,7 @@ export class Game {
         if (
           choice instanceof Kan
           && (
-            HandEvaluator.cacheable(hand.kanPreview(choice.tile)).finishers
+            Tile.serialize(HandEvaluator.cacheable(hand.kanPreview(choice.tile)).finishers)
             !== Tile.serialize(hand.lastFinishers)
           )
         ) {
