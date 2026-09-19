@@ -22,6 +22,9 @@ export class Player {
   #drawnCount = 0;
   #drawnCountAfterLastKan = 0;
   #kanCombo = 0;
+  #reaching = false;
+  #drawnCountAfterReach = 0;
+  #drawnCountBeforeReach = 0;
 
   /**
    * @param {DrawPile} drawPile 
@@ -44,6 +47,11 @@ export class Player {
     if (this.#hand.quads.length > 0) {
       this.#drawnCountAfterLastKan++;
     }
+    if (this.#reaching) {
+      this.#drawnCountAfterReach++;
+    } else {
+      this.#drawnCountBeforeReach++;
+    }
     return true;
   }
 
@@ -52,6 +60,14 @@ export class Player {
    */
   discard(index) {
     this.#discardPile.add(this.#hand.remove(index));
+  }
+
+  /**
+   * @param {int} index
+   */
+  reach(index) {
+    this.discard(index);
+    this.#reaching = true;
   }
 
   /**
@@ -107,5 +123,26 @@ export class Player {
    */
   get kanCombo() {
     return this.#kanCombo;
+  }
+
+  /**
+   * @returns {Boolean}
+   */
+  get reaching() {
+    return this.#reaching;
+  }
+
+  /**
+   * @returns {int}
+   */
+  get drawnCountAfterReach() {
+    return this.#drawnCountAfterReach;
+  }
+
+  /**
+   * @returns {int}
+   */
+  get drawnCountBeforeReach() {
+    return this.#drawnCountBeforeReach;
   }
 }
