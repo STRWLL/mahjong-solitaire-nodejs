@@ -16,13 +16,13 @@ export class Pattern {
   #p1;
   #p2;
   /**
-   * @param {*} label 役名
-   * @param {*} description 説明 
-   * @param {*} isFreeForm 面子・雀頭の洗い出しによる聴牌または和了の判定が不可能であること
-   * @param {*} describeAllowed 使用可能牌を説明に含める
-   * @param {*} allowed 使用可能牌 null はすべて
-   * @param {*} p1 翻数
-   * @param {*} p2 役満数
+   * @param {String} label 役名
+   * @param {String} description 説明 
+   * @param {Boolean} isFreeForm 面子・雀頭の洗い出しによる聴牌または和了の判定が不可能であること
+   * @param {Boolean} describeAllowed 使用可能牌を説明に含める
+   * @param {TileDefinition[]} allowed 使用可能牌 null はすべて
+   * @param {int} p1 翻数
+   * @param {int} p2 役満数
    */
   constructor(
     label,
